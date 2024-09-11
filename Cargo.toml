@@ -1,0 +1,18 @@
+[package]
+name = "idgen_rs"
+version = "1.0.0"
+authors = ["ntcat <ntcat@qq.com>"]
+edition = "2021"
+license = "MIT"
+keywords = ["snowflake", "idgenerator"]
+description = "A simple snowflake ID generator from idgen_go"
+
+
+[dependencies]
+chrono = "0.4.38"
+lazy_static = "1.4.0"
+
+[lib]
+name = "idgen_rs"
+path = "./src/lib.rs"
+crate-type = ["rlib"]
