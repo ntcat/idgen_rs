@@ -21,7 +21,6 @@ git clone https://github.com/ntcat/idgen_rs
 
 ```
 fn main() {
-    // Create an `IdGeneratorOptions` object using the Snowflake algorithm, inputting `WorkerId` in the constructor:
     let mut options = IdGeneratorOptions::new(1); // 1 is the worker id
     options.worker_id_bit_length = 10; // Default value is 6, limiting the maximum value of `WorkerId` to 2^6 - 1, meaning up to 64 nodes by default.
     options.seq_bit_length = 6; // Default value is 6, limiting the number of IDs generated per millisecond. If the generation speed exceeds 50,000 IDs per second, consider increasing `SeqBitLength` to 10.

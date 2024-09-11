@@ -8,18 +8,28 @@
 
 当我将编程方向全面转向 rust 时，自然我还是用 idgen.但是我发现作者比较懒，用的是 rust调用C 库。不是纯粹的 rust版本。
 我尝试在 linux 环境下编译，虽然麻烦，但是还是成功了。但是在 mac 环境下编译失败，我失去使用它的耐心。决定自己写一个纯纯的 rust 版本。
-当然它是基于 idgen_go,以保证这个 id生成方式的兼容性。
+它是基于我原来使用的 idgen_go, 以保证这个id生成方式的兼容性。
 
-idgen_rs，基于 snowflake 算法实现的，并且增加了一些功能：
+idgen_rs，基于 snowflake 雪花算法实现的，并且增加了一些功能：
 1. 支持多种计算方法，包括传统算法和漂移算法
 2. 支持自定义机器码位长和序列数位长
 3. 支持自定义最大序列数和最小序列数
 4. 支持自定义最大漂移次数
 5. 支持自定义基础时间
 
+## 使用方法：
+
+在 Cargo.toml加入：
+```
+[dependencies]
+
+idgen_rs = "0.1.1"
+```
+
+
+## 示例代码：
 ```
 fn main() {
-    // 雪花算法创建 IdGeneratorOptions 对象，可在构造函数中输入 WorkerId：
     let mut options = IdGeneratorOptions::new(1); // 1 是 worker id
     options.worker_id_bit_length = 10; // 默认值6，限定 WorkerId 最大值为2^6-1，即默认最多支持64个节点。
     options.seq_bit_length = 6; // 默认值6，限制每毫秒生成的ID个数。若生成速度超过5万个/秒，建议加大 SeqBitLength 到 10。
@@ -39,8 +49,10 @@ fn main() {
     println!("time: {}", datetime.format("%Y-%m-%d %H:%M:%S"));
 }
 
-//参考资料：
+```
 
+## 参考资料：
+```
  pub struct IdGeneratorOptions {
     pub method: u16,                // 雪花计算方法,（1-漂移算法|2-传统算法），默认1
     pub base_time: i64,             // 基础时间（ms单位），不能超过当前系统时间
