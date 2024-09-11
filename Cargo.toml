@@ -12,6 +12,7 @@ homepage = "https://github.com/ntcat/idgen_rs"
 repository = "https://github.com/ntcat/idgen_rs"
 documentation = "https://docs.rs/idgen_rs"
 
+
 [dependencies]
 chrono = "0.4.38"
 lazy_static = "1.4.0"
