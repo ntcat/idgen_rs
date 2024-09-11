@@ -17,8 +17,6 @@ idgen_rs，基于 snowflake 算法实现的，并且增加了一些功能：
 4. 支持自定义最大漂移次数
 5. 支持自定义基础时间
 
-git clone https://github.com/ntcat/idgen_rs
-
 ```
 fn main() {
     // 雪花算法创建 IdGeneratorOptions 对象，可在构造函数中输入 WorkerId：
