@@ -30,29 +30,29 @@ impl DefaultIdGenerator {
             panic!("WorkerIdBitLength error.(range:[1, 21])");
         }
         if options.worker_id_bit_length + options.seq_bit_length > 22 {
-            panic!("error：WorkerIdBitLength + SeqBitLength <= 22");
+            panic!("worker_id_bit_length + seq_bit_length <= 22");
         }
 
         let max_worker_id_number = (1 << options.worker_id_bit_length) - 1;
         if options.worker_id > max_worker_id_number {
-            panic!("WorkerId error. (range:[0, {}])", max_worker_id_number);
+            panic!("worker_id error. (range:[0, {}])", max_worker_id_number);
         }
 
         if options.seq_bit_length < 2 || options.seq_bit_length > 21 {
-            panic!("SeqBitLength error. (range:[2, 21])");
+            panic!("seq_bit_length error. (range:[2, 21])");
         }
 
         let max_seq_number = (1 << options.seq_bit_length) - 1;
         if options.max_seq_number > max_seq_number {
-            panic!("MaxSeqNumber error. (range:[1, {}])", max_seq_number);
+            panic!("max_seq_number error. (range:[1, {}])", max_seq_number);
         }
 
         if options.min_seq_number < 5 || options.min_seq_number > max_seq_number {
-            panic!("MinSeqNumber error. (range:[5, {}])", max_seq_number);
+            panic!("min_seq_number error. (range:[5, {}])", max_seq_number);
         }
 
         if options.top_over_cost_count > 10000 {
-            panic!("TopOverCostCount error. (range:[0, 10000])");
+            panic!("top_over_cost_count error. (range:[0, 10000])");
         }
 
         let snow_worker: Box<dyn ISnowWorker> = match options.method {
@@ -84,8 +84,24 @@ impl DefaultIdGenerator {
     }
 }
 
+impl Default for DefaultIdGenerator {
+    fn default() -> Self {
+        DefaultIdGenerator::new(IdGeneratorOptions {
+            base_time: 631123200000,
+            worker_id_bit_length: 6,
+            worker_id: 1,
+            seq_bit_length: 6,
+            max_seq_number: 63,
+            min_seq_number: 5,
+            top_over_cost_count: 2000,
+            method: 1,
+        })
+    }
+}
+
 fn current_time_millis() -> i64 {
     let now = SystemTime::now();
     let since_epoch = now.duration_since(UNIX_EPOCH).expect("Time went backwards");
     since_epoch.as_millis() as i64
 }
+

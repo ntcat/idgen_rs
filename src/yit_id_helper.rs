@@ -6,16 +6,7 @@ use lazy_static::lazy_static;
 
 
 lazy_static! {
-    pub static ref ID_GENERATOR: Mutex<DefaultIdGenerator> = Mutex::new(DefaultIdGenerator::new(IdGeneratorOptions {
-        base_time: 631123200000,
-        worker_id_bit_length: 5,
-        worker_id: 1,
-        seq_bit_length: 12,
-        max_seq_number: 4095,
-        min_seq_number: 5,
-        top_over_cost_count: 2000,
-        method: 1,
-    }));
+    pub static ref ID_GENERATOR: Mutex<DefaultIdGenerator> = Mutex::new(DefaultIdGenerator::default());
 }
 /// set the options of id_generator.
 ///

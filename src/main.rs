@@ -1,12 +1,12 @@
 use idgen_rs::{id_generator_options::IdGeneratorOptions, yit_id_helper};
 use chrono::{DateTime, Local, TimeZone, Utc}; 
 
+const WORKER_ID: u16 = 1;
 
 fn main() {
-    // 雪花算法创建 IdGeneratorOptions 对象，可在构造函数中输入 WorkerId：
-    let mut options = IdGeneratorOptions::new(1); // 1 是 worker id
-    options.worker_id_bit_length = 10; // 默认值6，限定 WorkerId 最大值为2^6-1，即默认最多支持64个节点。
-    options.seq_bit_length = 6; // 默认值6，限制每毫秒生成的ID个数。若生成速度超过5万个/秒，建议加大 SeqBitLength 到 10。
+    let mut options = IdGeneratorOptions::new(WORKER_ID); 
+    options.worker_id_bit_length = 10;  // 默认值6，限定 WorkerId 最大值为2^6-1，即默认最多支持64个节点。
+    options.seq_bit_length = 6;         // 默认值6，限制每毫秒生成的ID个数。若生成速度超过5万个/秒，建议加大 seq_bit_length 到 10。
     let base_time: DateTime<Utc> = Utc.with_ymd_and_hms(2023, 3, 13, 3, 3, 3)
         .single()
         .expect("Failed to create DateTime<Utc>");
