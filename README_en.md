@@ -2,18 +2,19 @@
 ## Introduction
 During the time I was writing GoLang, I used [idgen](https://github.com/yitter/idgenerator) , which satisfied my requirements for the Snowflake algorithm ID:
 
-Globally unique, using worker_id to achieve distributed uniqueness.
-Time-ordered, allowing me to extract the time when the ID was generated, which is very important to me.
-Monotonically increasing, all digits, int64, without sacrificing performance due to string storage.
+1. Globally unique, using worker_id to achieve distributed uniqueness.
+2. Time-ordered, allowing me to extract the time when the ID was generated, which is very important to me.
+3. Monotonically increasing, all digits, int64, without sacrificing performance due to string storage.
+
 When I shifted my programming focus entirely to Rust, I naturally wanted to continue using idgen. However, I found that the author was somewhat lazy and used Rust to call a C library, rather than a pure Rust version. I managed to compile it on Linux, though it was troublesome. However, compilation failed on macOS, and I lost patience with it. Therefore, I decided to write a purely Rust version. Of course, it is based on idgen_go to ensure compatibility with this ID generation method.
 
 idgen_rs is implemented based on the Snowflake algorithm and adds some features:
 
-Supports multiple calculation methods, including traditional and drift algorithms.
-Supports custom machine code bit length and sequence number bit length.
-Supports custom maximum and minimum sequence numbers.
-Supports custom maximum drift count.
-Supports custom base time.
+1. Supports multiple calculation methods, including traditional and drift algorithms.
+2. Supports custom machine code bit length and sequence number bit length.
+3. Supports custom maximum and minimum sequence numbers.
+4. Supports custom maximum drift count.
+5. Supports custom base time.
 
 
 git clone https://github.com/ntcat/idgen_rs
