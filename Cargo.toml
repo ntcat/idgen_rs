@@ -1,12 +1,16 @@
 [package]
 name = "idgen_rs"
-version = "1.0.0"
+version = "0.1.0"
 authors = ["ntcat <ntcat@qq.com>"]
 edition = "2021"
+rust-version = "1.56"
 license = "MIT"
 keywords = ["snowflake", "idgenerator"]
 description = "A simple snowflake ID generator from idgen_go"
-
+readme = "README.md"
+homepage = "https://github.com/ntcat/idgen_rs"
+repository = "https://github.com/ntcat/idgen_rs"
+documentation = "https://docs.rs/idgen_rs"
 
 [dependencies]
 chrono = "0.4.38"
