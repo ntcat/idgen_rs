@@ -13,7 +13,7 @@ lazy_static! {
 /// # Examples
 ///
 /// ```
-/// use idgen_rs::{id_generator_options::IGOptions, yit_id_helper};
+/// use idgen_rs::{options::IGOptions, id_helper};
 /// 
 /// let mut options = IGOptions::new(1);
 /// options.worker_id_bit_length = 10;
@@ -21,7 +21,7 @@ lazy_static! {
 /// options.seq_bit_length = 14;
 /// options.max_seq_number = 16383;
 /// 
-/// yit_id_helper::set_options(options);
+/// id_helper::set_options(options);
 ///
 /// ```
 pub fn set_options(options: IGOptions) {
@@ -33,9 +33,9 @@ pub fn set_options(options: IGOptions) {
 /// # Examples
 ///
 /// ```
-/// use idgen_rs::{id_generator_options::IGOptions, yit_id_helper};
+/// use idgen_rs::{options::IGOptions, id_helper};
 /// 
-/// let mut options = yit_id_helper::get_options();
+/// let mut options = id_helper::get_options();
 /// 
 ///
 /// ```
@@ -48,7 +48,7 @@ pub fn get_options() -> IGOptions {
 /// # Examples
 ///
 /// ```
-///let new_id = yit_id_helper::next_id();
+///let new_id = id_helper::next_id();
 /// println!("new_id: {}", new_id);
 /// 
 /// ```
@@ -62,7 +62,7 @@ pub fn next_id() -> i64 {
 /// # Examples
 ///
 /// ```
-///let time = yit_id_helper::extract_time(new_id);
+///let time = id_helper::extract_time(new_id);
 /// 
 /// ```
 pub fn extract_time(id: i64) -> SystemTime {

@@ -14,7 +14,7 @@ pub trait IIdGenerator {
 
 pub struct IdGenerator {
     pub options: IGOptions,
-    pub snow_worker: Box<dyn IWorker>,
+    pub worker: Box<dyn IWorker>,
 }
 // 实现 Send 和 Sync
 unsafe impl Send for IdGenerator {}
@@ -55,7 +55,7 @@ impl IdGenerator {
             panic!("top_over_cost_count error. (range:[0, 10000])");
         }
 
-        let snow_worker: Box<dyn IWorker> = match options.method {
+        let worker: Box<dyn IWorker> = match options.method {
             1 => Box::new(WorkerM1::new(&options)),
             2 => Box::new(WorkerM2::new(&options)),
             _ => Box::new(WorkerM1::new(&options)),
@@ -67,12 +67,12 @@ impl IdGenerator {
 
         IdGenerator {
             options,
-            snow_worker,
+            worker,
         }
     }
 
     pub fn new_long(&mut self) -> i64 {
-        self.snow_worker.next_id()
+        self.worker.next_id()
     }
 
     pub fn extract_time(&self, id: i64) -> SystemTime {

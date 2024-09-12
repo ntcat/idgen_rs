@@ -6,6 +6,9 @@ const WORKER_ID: u16 = 1;
 fn main() {
     snow_flake_init(WORKER_ID); 
 
+    let options = id_helper::get_options();
+    println!("options: {:?}", options);
+
     // 初始化后，在任何需要生成ID的地方，调用以下方法：
     let new_id = id_helper::next_id();
     println!("new_id: {}", new_id);
@@ -28,8 +31,5 @@ pub fn snow_flake_init(worker_id: u16) {
 
     // 保存参数（务必调用，否则参数设置不生效）：
     id_helper::set_options(options);
-    // 初始化后，在任何需要生成ID的地方，调用以下方法：
-    // let new_id = id_helper::next_id();
-    //  println!("new_id: {}", new_id);
 
 }

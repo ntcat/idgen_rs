@@ -39,12 +39,12 @@ fn main() {
     options.base_time = base_time.timestamp_millis(); 
 
     // 保存参数（务必调用，否则参数设置不生效）：
-    yit_id_helper::set_id_generator(options);
+    id_helper::set_options(options);
     // 初始化后，在任何需要生成ID的地方，调用以下方法：
-    let new_id = yit_id_helper::next_id();
+    let new_id = id_helper::next_id();
     println!("new_id: {}", new_id);
 
-    let time = yit_id_helper::extract_time(new_id);
+    let time = id_helper::extract_time(new_id);
     let datetime: DateTime<Local> = time.into(); 
     println!("time: {}", datetime.format("%Y-%m-%d %H:%M:%S"));
 }

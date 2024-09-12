@@ -35,12 +35,12 @@ fn main() {
     options.base_time = base_time.timestamp_millis();
 
     // Save parameters (this must be called, otherwise the settings will not take effect):
-    yit_id_helper::set_id_generator(options);
+    id_helper::set_options(options);
     // After initialization, wherever an ID is needed, call the following method:
-    let new_id = yit_id_helper::next_id();
+    let new_id = id_helper::next_id();
     println!("new_id: {}", new_id);
 
-    let time = yit_id_helper::extract_time(new_id);
+    let time = id_helper::extract_time(new_id);
     let datetime: DateTime<Local> = time.into();
     println!("time: {}", datetime.format("%Y-%m-%d %H:%M:%S"));
 }
