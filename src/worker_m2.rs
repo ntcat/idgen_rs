@@ -1,16 +1,17 @@
 use std::sync::MutexGuard;
-use crate::id_generator_options::IdGeneratorOptions;
-use crate::isnow_worker::ISnowWorker;
-use crate::snow_worker_m1::SnowWorkerM1;
+use crate::options::IGOptions;
+use crate::iworker::IWorker;
+use crate::worker_m1::WorkerM1;
 
-pub struct SnowWorkerM2 {
-    base: SnowWorkerM1,
+#[derive(Debug, Clone)]
+pub struct WorkerM2 {
+    base: WorkerM1,
 }
 
-impl SnowWorkerM2 {
-    pub fn new(options: &IdGeneratorOptions) -> Self {
-        SnowWorkerM2 {
-            base: SnowWorkerM1::new(options),
+impl WorkerM2 {
+    pub fn new(options: &IGOptions) -> Self {
+        WorkerM2 {
+            base: WorkerM1::new(options),
         }
     }
 
@@ -41,8 +42,8 @@ impl SnowWorkerM2 {
 }
 
 
-impl ISnowWorker for SnowWorkerM2 {
+impl IWorker for WorkerM2 {
     fn next_id(&mut self) -> i64 {
-        SnowWorkerM2::next_id(self)
+        WorkerM2::next_id(self)
     }
 }

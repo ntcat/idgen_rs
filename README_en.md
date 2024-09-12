@@ -16,12 +16,17 @@ idgen_rs is implemented based on the Snowflake algorithm and adds some features:
 4. Supports custom maximum drift count.
 5. Supports custom base time.
 
+## Usage:
+Add the following to your `Cargo.toml`:
+```
+[dependencies]
 
-git clone https://github.com/ntcat/idgen_rs
-
+idgen_rs = "0.1.6"
+```
+## Example Code:
 ```
 fn main() {
-    let mut options = IdGeneratorOptions::new(1); // 1 is the worker id
+    let mut options = IGOptions::new(1); // 1 is the worker id
     options.worker_id_bit_length = 10; // Default value is 6, limiting the maximum value of `WorkerId` to 2^6 - 1, meaning up to 64 nodes by default.
     options.seq_bit_length = 6; // Default value is 6, limiting the number of IDs generated per millisecond. If the generation speed exceeds 50,000 IDs per second, consider increasing `SeqBitLength` to 10.
     let base_time: DateTime<Utc> = Utc.with_ymd_and_hms(2023, 3, 13, 3, 3, 3)
@@ -39,10 +44,10 @@ fn main() {
     let datetime: DateTime<Local> = time.into();
     println!("time: {}", datetime.format("%Y-%m-%d %H:%M:%S"));
 }
-
-
-
-pub struct IdGeneratorOptions {
+```
+## References:
+```
+pub struct IGOptions {
     pub method: u16,                // Snowflake calculation method (1-drift algorithm | 2-traditional algorithm), default is 1
     pub base_time: i64,             // Base time (in milliseconds), cannot exceed the current system time
     pub worker_id: u16,             // Machine code, must be set externally, maximum value is 2^WorkerIdBitLength - 1

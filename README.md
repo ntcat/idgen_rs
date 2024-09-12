@@ -23,14 +23,14 @@ idgen_rs，基于 snowflake 雪花算法实现的，并且增加了一些功能�
 ```
 [dependencies]
 
-idgen_rs = "0.1.5"
+idgen_rs = "0.1.6"
 ```
 
 
 ## 示例代码：
 ```
 fn main() {
-    let mut options = IdGeneratorOptions::new(1); // 1 是 worker id
+    let mut options = IGOptions::new(1); // 1 是 worker id
     options.worker_id_bit_length = 10; // 默认值6，限定 WorkerId 最大值为2^6-1，即默认最多支持64个节点。
     options.seq_bit_length = 6; // 默认值6，限制每毫秒生成的ID个数。若生成速度超过5万个/秒，建议加大 SeqBitLength 到 10。
     let base_time: DateTime<Utc> = Utc.with_ymd_and_hms(2023, 3, 13, 3, 3, 3)
@@ -53,7 +53,7 @@ fn main() {
 
 ## 参考资料：
 ```
- pub struct IdGeneratorOptions {
+ pub struct IGOptions {
     pub method: u16,                // 雪花计算方法,（1-漂移算法|2-传统算法），默认1
     pub base_time: i64,             // 基础时间（ms单位），不能超过当前系统时间
     pub worker_id: u16,             // 机器码，必须由外部设定，最大值 2^WorkerIdBitLength-1

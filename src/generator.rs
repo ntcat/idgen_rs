@@ -3,31 +3,31 @@ use std::{
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
 
-use crate::id_generator_options::IdGeneratorOptions;
-use crate::isnow_worker::ISnowWorker;
-use crate::snow_worker_m1::SnowWorkerM1;
-use crate::snow_worker_m2::SnowWorkerM2;
+use crate::options::IGOptions;
+use crate::iworker::IWorker;
+use crate::worker_m1::WorkerM1;
+use crate::worker_m2::WorkerM2;
 
 pub trait IIdGenerator {
     fn new_long(&mut self) -> i64;
 }
 
-pub struct DefaultIdGenerator {
-    pub options: IdGeneratorOptions,
-    pub snow_worker: Box<dyn ISnowWorker>,
+pub struct IdGenerator {
+    pub options: IGOptions,
+    pub snow_worker: Box<dyn IWorker>,
 }
 // 实现 Send 和 Sync
-unsafe impl Send for DefaultIdGenerator {}
-unsafe impl Sync for DefaultIdGenerator {}
+unsafe impl Send for IdGenerator {}
+unsafe impl Sync for IdGenerator {}
 
-impl DefaultIdGenerator {
-    pub fn new(options: IdGeneratorOptions) -> Self {
+impl IdGenerator {
+    pub fn new(options: IGOptions) -> Self {
         if options.base_time < 631123200000 || options.base_time > current_time_millis() {
-            panic!("BaseTime error.");
+            panic!("base_time error.");
         }
 
         if options.worker_id_bit_length == 0 {
-            panic!("WorkerIdBitLength error.(range:[1, 21])");
+            panic!("worker_id_bit_length error.(range:[1, 21])");
         }
         if options.worker_id_bit_length + options.seq_bit_length > 22 {
             panic!("worker_id_bit_length + seq_bit_length <= 22");
@@ -55,17 +55,17 @@ impl DefaultIdGenerator {
             panic!("top_over_cost_count error. (range:[0, 10000])");
         }
 
-        let snow_worker: Box<dyn ISnowWorker> = match options.method {
-            1 => Box::new(SnowWorkerM1::new(&options)),
-            2 => Box::new(SnowWorkerM2::new(&options)),
-            _ => Box::new(SnowWorkerM1::new(&options)),
+        let snow_worker: Box<dyn IWorker> = match options.method {
+            1 => Box::new(WorkerM1::new(&options)),
+            2 => Box::new(WorkerM2::new(&options)),
+            _ => Box::new(WorkerM1::new(&options)),
         };
 
         if options.method == 1 {
             sleep(Duration::from_micros(500));
         }
 
-        DefaultIdGenerator {
+        IdGenerator {
             options,
             snow_worker,
         }
@@ -84,9 +84,9 @@ impl DefaultIdGenerator {
     }
 }
 
-impl Default for DefaultIdGenerator {
+impl Default for IdGenerator {
     fn default() -> Self {
-        DefaultIdGenerator::new(IdGeneratorOptions {
+        IdGenerator::new(IGOptions {
             base_time: 631123200000,
             worker_id_bit_length: 6,
             worker_id: 1,

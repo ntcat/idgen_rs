@@ -1,11 +1,12 @@
-use crate::id_generator_options::IdGeneratorOptions;
-use crate::isnow_worker::ISnowWorker;
-use crate::over_cost_action_arg::OverCostActionArg;
-use std::sync::Mutex;
+use crate::options::IGOptions;
+use crate::iworker::IWorker;
+use crate::action_arg::OverCostActionArg;
+use std::sync::{Arc, Mutex};
 use std::thread::sleep;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
-pub struct SnowWorkerM1 {
+#[derive(Debug, Clone)]
+pub struct WorkerM1 {
     pub  base_time: i64,
     pub  worker_id: u16,
     pub  worker_id_bit_length: u8,
@@ -22,11 +23,11 @@ pub struct SnowWorkerM1 {
     pub  over_cost_count_in_one_term: u32,
     // gen_count_in_one_term: u32,
     // term_index: u32,
-    pub lock: Mutex<()>,
+    pub lock: Arc<Mutex<()>>,
 }
 
-impl SnowWorkerM1 {
-    pub fn new(options: &IdGeneratorOptions) -> Self {
+impl WorkerM1 {
+    pub fn new(options: &IGOptions) -> Self {
         let base_time = if options.base_time != 0 {
             options.base_time
         } else {
@@ -58,7 +59,7 @@ impl SnowWorkerM1 {
         let timestamp_shift = worker_id_bit_length + seq_bit_length;
         let current_seq_number = min_seq_number;
 
-        SnowWorkerM1 {
+        WorkerM1 {
             base_time,
             worker_id,
             worker_id_bit_length,
@@ -75,7 +76,7 @@ impl SnowWorkerM1 {
             over_cost_count_in_one_term: 0,
             // gen_count_in_one_term: 0,
             // term_index: 0,
-            lock: Mutex::new(()),
+            lock: Arc::new(Mutex::new(())),
         }
     }
 
@@ -200,8 +201,8 @@ impl SnowWorkerM1 {
 
 }
 
-impl ISnowWorker for SnowWorkerM1 {
+impl IWorker for WorkerM1 {
     fn next_id(&mut self) -> i64 {
-        SnowWorkerM1::next_id(self)
+        WorkerM1::next_id(self)
     }
 }

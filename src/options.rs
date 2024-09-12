@@ -1,4 +1,5 @@
- pub struct IdGeneratorOptions {
+#[derive(Debug, Clone)]
+pub struct IGOptions {
     pub method: u16,                // 雪花计算方法,（1-漂移算法|2-传统算法），默认1
     pub base_time: i64,             // 基础时间（ms单位），不能超过当前系统时间
     pub worker_id: u16,             // 机器码，必须由外部设定，最大值 2^WorkerIdBitLength-1
@@ -9,9 +10,9 @@
     pub top_over_cost_count: u32,   // 最大漂移次数（含），默认2000，推荐范围500-10000（与计算能力有关）
 }
 
-impl IdGeneratorOptions {
+impl IGOptions {
     pub fn new(worker_id: u16) -> Self {
-        IdGeneratorOptions {
+        IGOptions {
             method: 1,
             base_time: 1582136402000,
             worker_id,

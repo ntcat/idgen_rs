@@ -1,34 +1,48 @@
-use crate::default_id_generator::DefaultIdGenerator;
-use crate::id_generator_options::IdGeneratorOptions;
-use std::sync::Mutex;
+use crate::generator::IdGenerator;
+use crate::options::IGOptions;
+use std::sync::{Mutex, MutexGuard};
 use std::time::SystemTime;
 use lazy_static::lazy_static;
 
 
 lazy_static! {
-    pub static ref ID_GENERATOR: Mutex<DefaultIdGenerator> = Mutex::new(DefaultIdGenerator::default());
+    pub static ref ID_GENERATOR: Mutex<IdGenerator> = Mutex::new(IdGenerator::default());
 }
 /// set the options of id_generator.
 ///
 /// # Examples
 ///
 /// ```
-/// use idgen_rs::{id_generator_options::IdGeneratorOptions, yit_id_helper};
+/// use idgen_rs::{id_generator_options::IGOptions, yit_id_helper};
 /// 
-/// let mut options = IdGeneratorOptions::new(1);
+/// let mut options = IGOptions::new(1);
 /// options.worker_id_bit_length = 10;
 /// options.worker_id = 1024;
 /// options.seq_bit_length = 14;
 /// options.max_seq_number = 16383;
 /// 
-/// yit_id_helper::set_id_generator(options);
+/// yit_id_helper::set_options(options);
 ///
 /// ```
-pub fn set_id_generator(options: IdGeneratorOptions) {
+pub fn set_options(options: IGOptions) {
     let mut generator = ID_GENERATOR.lock().unwrap();
-    *generator = DefaultIdGenerator::new(options);
+    *generator = IdGenerator::new(options);
 }
-
+/// get the options of id_generator.
+///
+/// # Examples
+///
+/// ```
+/// use idgen_rs::{id_generator_options::IGOptions, yit_id_helper};
+/// 
+/// let mut options = yit_id_helper::get_options();
+/// 
+///
+/// ```
+pub fn get_options() -> IGOptions {
+    let generator: MutexGuard<IdGenerator> = ID_GENERATOR.lock().unwrap();
+    generator.options.clone()
+}
 /// generate next id.
 ///
 /// # Examples
