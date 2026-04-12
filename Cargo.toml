@@ -1,22 +1,41 @@
 [package]
 name = "idgen_rs"
-version = "0.1.6"
+version = "0.2.0"
 authors = ["ntcat <ntcat@qq.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
 keywords = ["snowflake", "idgenerator"]
-description = "A perfect snowflake ID generator"
+description = "A high-performance, lock-free snowflake ID generator using AtomicU64 + CAS. Generates 2M+ IDs per second on a single core."
 readme = "README.md"
 homepage = "https://github.com/ntcat/idgen_rs"
 repository = "https://github.com/ntcat/idgen_rs"
 documentation = "https://docs.rs/idgen_rs"
 
+[features]
+default = []
+metrics = []
+encodings = ["base62", "base64"]
+base62 = ["dep:base62"]
+base64 = ["dep:base64"]
 
 [dependencies]
-chrono = "0.4.38"
-lazy_static = "1.5.0"
+chrono = "0.4.44"
+base62 = { version = "2.2", optional = true }
+base64 = { version = "0.22", optional = true }
+
+[dev-dependencies]
+criterion = "0.8.2"
+
+[[bench]]
+name = "id_bench"
+harness = false
 
 [lib]
 name = "idgen_rs"
 path = "./src/lib.rs"
 crate-type = ["rlib"]
+
+[[bin]]
+name = "idgen_rs"
+path = "src/main.rs"
+required-features = ["encodings"]
